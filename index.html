@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SEV3N.EXE</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <style>
+    @font-face {
+      font-family: 'VT323';
+      src: url('https://fonts.gstatic.com/s/vt323/v17/pxiKyp0ihIEF2isfFJU.woff2') format('woff2');
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'VT323', monospace;
+      background: url('card.png') no-repeat center center fixed;
+      background-size: cover;
+      color: #00ffff;
+      overflow-x: hidden;
+      animation: pulseBG 20s infinite alternate;
+    }
+
+    .video-intro {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: black;
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .video-intro video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .video-overlay-text {
+      position: relative;
+      color: #00ffff;
+      font-size: 3em;
+      font-family: 'VT323', monospace;
+      text-shadow: 0 0 15px #00ffff;
+      cursor: pointer;
+      z-index: 1001;
+    }
+
+    .bg-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: linear-gradient(to bottom right, rgba(0, 31, 51, 0.2), rgba(0, 0, 0, 0.4));
+      mix-blend-mode: lighten;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .stars {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      pointer-events: none;
+      background: transparent url('https://raw.githubusercontent.com/kognise/water.css/master/src/starfield.gif') repeat top center;
+      background-size: cover;
+      animation: starsMove 80s linear infinite;
+      opacity: 0.4;
+      z-index: 1;
+    }
+
+    @keyframes starsMove {
+      from { background-position: 0 0; }
+      to { background-position: 10000px 5000px; }
+    }
+
+    @keyframes pulseBG {
+      from { filter: brightness(1); }
+      to { filter: brightness(1.2); }
+    }
+
+    header, nav, .slogan, .content, .credit {
+      display: none;
+    }
+
+    .boot-container.booted header,
+    .boot-container.booted nav,
+    .boot-container.booted .slogan,
+    .boot-container.booted .content,
+    .boot-container.booted .credit {
+      display: block;
+    }
+
+    header {
+      text-align: center;
+      padding: 15px;
+      font-size: 2.5em;
+      font-weight: bold;
+      background: rgba(0, 0, 0, 0.9);
+      border-bottom: 1px solid #00ffff;
+      color: #00ffff;
+      text-shadow: 0 0 10px #00ffff;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      padding: 15px 10px;
+      background: rgba(0, 0, 0, 0.85);
+      border-bottom: 1px solid #00ffff;
+      font-size: 1.2em;
+      font-weight: bold;
+      text-transform: uppercase;
+      flex-wrap: wrap;
+    }
+
+    nav div {
+      cursor: pointer;
+      position: relative;
+      transition: 0.2s ease-in-out;
+      white-space: nowrap;
+    }
+
+    nav div::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0%;
+      height: 2px;
+      background: #00ffff;
+      transition: width 0.3s ease-in-out;
+    }
+
+    nav div:hover::after {
+      width: 100%;
+    }
+
+    nav div:hover {
+      animation: flicker 0.2s infinite alternate;
+    }
+
+    @keyframes flicker {
+      0% { opacity: 1; }
+      100% { opacity: 0.6; }
+    }
+
+    .slogan {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 1.7em;
+      text-shadow: 0 0 15px #00ffff;
+      animation: flicker 2s infinite;
+    }
+
+    .content {
+      padding: 20px;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .map-hologram {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .sector {
+      background: rgba(0, 255, 255, 0.05);
+      border: 1px solid #00ffff;
+      padding: 15px;
+      cursor: pointer;
+      transition: 0.3s;
+      backdrop-filter: blur(2px);
+    }
+
+    .sector:hover {
+      background: rgba(0, 255, 255, 0.2);
+      box-shadow: 0 0 15px #00ffff;
+    }
+
+    .sector-content {
+      margin-top: 10px;
+      display: none;
+      padding-left: 15px;
+      color: #aaffff;
+    }
+
+    .tier {
+      border: 1px solid #00ffff;
+      background-color: rgba(0, 0, 0, 0.6);
+      margin: 15px 0;
+      padding: 20px;
+      animation: glitchIn 0.6s ease forwards;
+      box-shadow: 0 0 15px #00ffff33;
+    }
+
+    .footer-command {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 1.3em;
+      color: #00ffff;
+      text-shadow: 0 0 10px #00ffff;
+    }
+
+    .credit {
+      text-align: center;
+      margin: 50px 0 20px;
+      font-size: 1em;
+      color: #0088aa;
+      opacity: 0.6;
+    }
+
+    @keyframes glitchIn {
+      0% { opacity: 0; transform: scale(0.95); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <div class="video-intro" id="intro">
+    <video autoplay muted playsinline onended="showOverlayText()">
+      <source src="video.mp4" type="video/mp4">
+    </video>
+    <div class="video-overlay-text" id="startBtn" onclick="bootSystem()" style="display:none">LOG IN</div>
+  </div>
+
+  <div class="bg-overlay"></div>
+  <div class="stars"></div>
+
+  <div class="boot-container" id="boot">
+    <header>SEV3N.EXE</header>
+
+    <nav>
+      <div onclick="showSection('navlog')">[NAVIGATION LOG]</div>
+      <div onclick="showSection('artifacts')">[RETRIEVED ARTIFACTS]</div>
+      <div>[SUPPLY STATIONS]</div>
+      <div>[COMM LINK]</div>
+    </nav>
+
+    <div class="slogan">System booted by love, powered by fans.</div>
+
+    <div id="navlog" class="content">
+      <div class="map-hologram">
+        <div class="sector" onclick="toggleSector('sector1')">[SECTOR 1]: Booting Reality</div>
+        <div id="sector1" class="sector-content">
+          <div>Booth tại MOVIE (BHD Phạm Ngọc Thạch)</div>
+          <div>Cafe Event tại Concert ATVNCG OCP3</div>
+          <div>Fangift</div>
+        </div>
+        <div class="sector" onclick="toggleSector('sector2')">[SECTOR 2]: Signal Transmission</div>
+        <div id="sector2" class="sector-content">
+          <div>Photobooth Minishow HCM</div>
+          <div>Fangift tại Minishow HCM</div>
+        </div>
+        <div class="sector" onclick="toggleSector('sector3')">[SECTOR 3]: Final Upload</div>
+        <div id="sector3" class="sector-content">
+          <div>Booth at minishow HN</div>
+          <div>Fangift Minishow HN</div>
+        </div>
+        <div class="sector" onclick="toggleSector('sector4')">[SECTOR 4]: Neon Traced</div>
+        <div id="sector4" class="sector-content">
+          <div>LED support minishow HN và concert ATVNCG</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="artifacts" class="content" style="display:none">
+      <div class="tier">[TIER 1]: 89-401: card, keyring</div>
+      <div class="tier">[TIER 2]: >401: keyring neon</div>
+      <div class="tier">[TIER 3]: >=777: standee</div>
+      <div class="tier">[TIER 4]: >=1040: twilly</div>
+      <div class="tier">[TIER 5]: Highest: +Binder</div>
+      <div class="footer-command">[UPLOAD YOUR SUPPORT. BECOME PART OF THE SYSTEM.]</div>
+    </div>
+
+    <div class="credit">TOSE.TEAM</div>
+  </div>
+
+  <audio id="glitchSound" src="https://freesound.org/data/previews/348/348654_3248244-lq.mp3"></audio>
+
+  <script>
+    function showOverlayText() {
+      document.getElementById('startBtn').style.display = 'block';
+    }
+
+    function bootSystem() {
+      document.getElementById('intro').style.display = 'none';
+      document.getElementById('boot').classList.add('booted');
+    }
+
+    function showSection(id) {
+      document.querySelectorAll('.content').forEach(el => el.style.display = 'none');
+      document.getElementById(id).style.display = 'block';
+      document.getElementById('glitchSound').play();
+    }
+
+    function toggleSector(id) {
+      const el = document.getElementById(id);
+      el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+    }
+  </script>
+</body>
+</html>
